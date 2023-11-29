@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tax Calculator with HRA</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: bisque;
+        }
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #bbfdf2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Tax Calculator with HRA</h2>
+        <label for="basicSalary">Basic Salary (Annual):</label>
+        <input type="number" id="basicSalary" placeholder="Enter Basic Salary" min="0">
+        
+        <label for="hraPercentage">HRA Percentage:</label>
+        <input type="number" id="hraPercentage" placeholder="Enter HRA Percentage" min="0" max="100">
+        
+        <button onclick="calculateTax()">Calculate Tax</button>
+        
+        <div id="result"></div>
+    </div>
+
+    <script>
+        function calculateTax() {
+            const basicSalary = parseFloat(document.getElementById("basicSalary").value);
+            const hraPercentage = parseFloat(document.getElementById("hraPercentage").value);
+
+            if (isNaN(basicSalary) || isNaN(hraPercentage)) {
+                document.getElementById("result").innerHTML = "Please enter valid numbers.";
+                return;
+            }
+
+            const hraAmount = (hraPercentage / 100) * basicSalary;
+            const taxableIncome = basicSalary - hraAmount;
+            let tax = 0;
+
+            if (taxableIncome <= 250000) {
+                tax = 0;
+            } else if (taxableIncome <= 500000) {
+                tax = (taxableIncome - 250000) * 0.05;
+            } else if (taxableIncome <= 1000000) {
+                tax = 250000 * 0.05 + (taxableIncome - 500000) * 0.2;
+            } else {
+                tax = 250000 * 0.05 + 500000 * 0.2 + (taxableIncome - 1000000) * 0.3;
+            }
+
+            document.getElementById("result").innerHTML = `Taxable Income: ${taxableIncome.toFixed(2)}<br>Tax Payable: ${tax.toFixed(2)}`;
+        }
+    </script>
+</body>
+</html>
